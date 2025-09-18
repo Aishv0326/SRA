@@ -25,8 +25,6 @@
             /* Lighter text */
             --white: #FFFFFF;
             /* Pure white */
-            --success: #27ae60;
-            --error: #e74c3c;
         }
 
         /* Global Styles */
@@ -420,24 +418,6 @@
             resize: vertical;
         }
 
-        /* Form Messages */
-        .form-message {
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .success-message {
-            background: var(--success);
-            color: white;
-        }
-
-        .error-message {
-            background: var(--error);
-            color: white;
-        }
-
         /* Footer */
         footer {
             background: var(--primary);
@@ -775,32 +755,22 @@
                     <h3>Send us a Message</h3>
                     <form id="contactForm">
                         <div class="form-group">
-                            <input type="text" id="name" class="form-input" placeholder="Your Name" required>
+                            <input type="text" class="form-input" placeholder="Your Name" required>
                         </div>
 
                         <div class="form-group">
-                            <input type="email" id="email" class="form-input" placeholder="Your Email" required>
+                            <input type="email" class="form-input" placeholder="Your Email" required>
                         </div>
 
                         <div class="form-group">
-                            <input type="tel" id="phone" class="form-input" placeholder="Your Phone">
+                            <input type="tel" class="form-input" placeholder="Your Phone">
                         </div>
 
                         <div class="form-group">
-                            <textarea id="message" class="form-input" placeholder="Your Message" required></textarea>
+                            <textarea class="form-input" placeholder="Your Message" required></textarea>
                         </div>
 
-                        <button type="submit" class="btn">
-                            <i class="fas fa-paper-plane"></i> Send Message
-                        </button>
-
-                        <div id="successMessage" class="form-message success-message">
-                            <i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.
-                        </div>
-
-                        <div id="errorMessage" class="form-message error-message">
-                            <i class="fas fa-exclamation-circle"></i> Sorry! There was an error sending your message.
-                        </div>
+                        <button type="submit" class="btn">Send Message</button>
                     </form>
                 </div>
             </div>
@@ -864,13 +834,7 @@
         </div>
     </footer>
 
-    <!-- Add EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS with your Public Key
-        // Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
-        emailjs.init("nOXCjDS4nZ--DT4A0");
-
         // Navigation toggle
         const hamburger = document.querySelector(".hamburger");
         const navMenu = document.querySelector(".nav-menu");
@@ -895,90 +859,12 @@
             }
         });
 
-        // Form submission with EmailJS
+        // Form submission
         document.getElementById('contactForm').addEventListener('submit', function (e) {
             e.preventDefault();
-
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const message = document.getElementById('message').value;
-
-            // Validation
-            if (!name || !email || !message) {
-                showError('Please fill in all required fields');
-                return;
-            }
-
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                showError('Please enter a valid email address');
-                return;
-            }
-
-            // Show loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            submitBtn.disabled = true;
-
-            // Hide any previous messages
-            hideMessages();
-
-            // Send email using EmailJS
-            // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your actual IDs
-            emailjs.send('service_r3stzfv', 'template_9xwrerj', {
-                from_name: name,
-                from_email: email,
-                phone: phone,
-                message: message,
-                to_email: 'ayushi0290104@gmail.com',
-                company_name: 'SRE Interiors',
-                date: new Date().toLocaleDateString()
-            })
-                .then(function (response) {
-                    showSuccess('Your message has been sent successfully! We will contact you soon.');
-                    document.getElementById('contactForm').reset();
-                }, function (error) {
-                    showError('Sorry, there was an error sending your message. Please try again or contact us directly.');
-                    console.error('EmailJS Error:', error);
-                })
-                .finally(function () {
-                    // Reset button
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                });
+            alert('Thank you for your message. We will get back to you soon!');
+            this.reset();
         });
-
-        function showSuccess(message) {
-            const successElement = document.getElementById('successMessage');
-            const errorElement = document.getElementById('errorMessage');
-
-            errorElement.style.display = 'none';
-            successElement.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-            successElement.style.display = 'block';
-
-            // Scroll to success message
-            successElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function showError(message) {
-            const successElement = document.getElementById('successMessage');
-            const errorElement = document.getElementById('errorMessage');
-
-            successElement.style.display = 'none';
-            errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-            errorElement.style.display = 'block';
-
-            // Scroll to error message
-            errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function hideMessages() {
-            document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('errorMessage').style.display = 'none';
-        }
     </script>
 </body>
 
